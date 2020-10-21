@@ -1,8 +1,19 @@
-.header{
+body{
 	background-color: #181a23;
 	padding: 10px 0;
 }
 
+.footer{
+  margin-top: 30px;
+  width: 100%; 
+  padding: 15px; 
+  text-align: center;
+}
+
+main{
+  min-height: 600px;
+  background-color: white;
+}
 .logo{
 	max-width: 180px;
 }
@@ -19,7 +30,134 @@
 	background: #ff2b58;
 }
 
+.col-lg-3{
+	padding-right: 0px;
+}
 
 .center{
-		margin-top: 15px; 
+	margin-top: 15px; 
+}
+
+.popup-title{
+	font: 300 20px/1.4 'Roboto',sans-serif;
+    color: #000;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.open-button {
+  border-radius: 5px;
+   border: 1px solid #ffffff; /* Параметры рамки */
+  background-color: #181a23;  
+  padding: 8px 24px;
+  margin-right: 10px;
+  color: white;
+  font-weight: bold;
+  height: 42px;
+  display: inline-block;
+  cursor: pointer;
+ }
+ .open-button:hover {
+  color:#AAA;
+  text-decoration: none;
+ }
+
+#account_btn{
+  width: 200px;
+}
+.form-popup {
+  position: absolute;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2); /* Параметры тени */
+  z-index: 9;
+  
+}
+
+.form-container {
+  max-width: 240px;
+  padding: 23px 32px 8px;
+  background-color: white;
+  opacity: 0.97;  
+}
+
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 6px;
+  margin: -6px 0 10px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .btn {
+  background-color: #ff2b58;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+  width: 75%;
+  position: relative;
+  margin: 8px 27px 4px;
+  text-align: center;
+  opacity: 0.8;
+  font-weight: bold;
+}
+
+/*.form-container .cancel {
+  background-color: #448AFF;
+}*/
+
+.close {
+position: absolute;
+right: 16px;
+top: 6px;
+width: 26px;
+opacity: 0.3;
+}
+.close:hover {
+opacity: 1;
+}
+.close:before, .close:after {
+position: absolute;
+left: 25px;
+content: ' ';
+height: 20px;
+width: 2px;
+background-color: #333;
+}
+.close:before {
+transform: rotate(45deg);
+}
+.close:after {
+transform: rotate(-45deg);
+}
+
+
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.profile-form {
+    width: 200px;
+    background-color: white;
+    opacity: 0.97;  
+}
+.profile-btn {
+  width: 100%;
+  margin: 0;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  text-align: center;
+  border: 1px solid grey;
+  border-width: 1px 0px 0px 0px;
+  background-color: #EEE;
+  cursor: pointer;
+  background: white;
+}
+
+.profile-btn:hover {
+  background-color: #FFF;
 }

@@ -1,36 +1,7 @@
-<!doctype html>
-<html lang="ru">
-<head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<header class="header py-4">
-		<div class="container border-bottom pb-4">
-			<div class="row">
-				<div class="col-lg-3">
-					<img src="src/logo.png" alt="Логотип" class="logo">
-				</div>
-				<div class="col-lg-9">
-					<nav class="nav justify-content-center">
-						<a class="nav-link text-white" href="index.html">Портфолио</a>
-						<a class="nav-link text-white" href="ans.html">Отзывы</a>
-						<a class="nav-link text-white active" href="contacts.html">Контакты</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-		<div class="container">
-			<h1 class="text-white text-center my-4">Контакты</h1>
-		</div>
-	</header>
-
-	<section class="pt-5">
+<?php 
+include "header.php";
+?>
+	<main class="pt-5">
 		<div class="container">
 			<h2 class="text-gray mb-5">Свяжитесь с нами!</h2>
 			<div class="row">
@@ -68,18 +39,7 @@
 						</div>
 					</div>
 
-					<div> 
-						<button class="btn btn-default">
-						     <img src="src/vk.png" width="60" /> 
-						</button>
-						<button class="btn btn-default">
-						     <img src="src/inst.png" width="60" /> 
-						</button>
-						<button class="btn btn-default">
-						     <img src="src/fs.png" width="60" /> 
-						</button>
-					</div>
-
+					
 				</div>
 				<div class="col-lg-8">
 					<form>
@@ -100,10 +60,8 @@
 				</div>
 			</div>
 		</div>
-	</section>
-
-	<network>
-
-	</network>
-</body>
-</html>
+	</main>
+	
+<?php 
+include "footer.php";
+?>
