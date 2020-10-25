@@ -13,24 +13,15 @@ function generateCode($length=6) {
 }
 
 function login($link){
-        // Вытаскиваем из БД запись, у которой логин равняеться введенному
+        // Вытаскиваем из БД запись, у которой логин равняется введенному
         $query = mysqli_query($link,"SELECT user_id, user_login, user_password FROM users WHERE user_login='".mysqli_real_escape_string($link,$_POST['login'])."' LIMIT 1");
         $data = mysqli_fetch_assoc($query);
 
         // Сравниваем пароли
         if($data != null && $data['user_password'] === md5(md5($_POST['password'])))
         {
-            // Генерируем случайное число и шифруем его
-            $hash = md5(generateCode(10));
-
-            $insip = ", user_ip=INET_ATON('".$_SERVER['REMOTE_ADDR']."')";
-
-            // Записываем в БД новый хеш авторизации и IP
-            mysqli_query($link, "UPDATE users SET user_hash='".$hash."' ".$insip." WHERE user_id='".$data['user_id']."'");
-
             // Ставим куки
-            setcookie("id", $data['user_id'], time()+60*60*24*30, "/");
-            setcookie("hash", $hash, time()+60*60*24*30, "/", null, null, true); // httponly !!!
+            $_SESSION["id"] = $data['user_id'];
 
             //// Переадресовываем браузер на страницу проверки нашего скрипта
             header("Location: index.php"); 
@@ -39,6 +30,7 @@ function login($link){
         }
 }
 
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     
@@ -58,17 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 
     ////код для выхода из аккаунта 
     
-    elseif (isset($_POST['leave']) && isset($_COOKIE["id"])) 
+    elseif (isset($_POST['leave']) && isset($_SESSION["id"])) 
     {
         $link = getConnection();
-        // cтираем временные данные о пользователе (id, хэш, куки)
-        mysqli_query($link, "UPDATE users SET user_hash='' WHERE user_id='".$_COOKIE["id"]."'");
 
-        setcookie("id", null, -1, "/");
-        setcookie("hash", null, -1, "/", null, null, true); // httponly !!!
+        unset($_SESSION["id"]);
 
         header("Location: index.php"); 
     } 
+
+    ////код для регистрации
+
     elseif (isset($_POST['signup']) && isset($_POST['login']) && isset($_POST['password'])){
         $link = getConnection();
 
@@ -95,6 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
             echo '<h1>Пользователь уже зарегистрирован</h1>';
         }
     }
+
+    ////некорректные запросы
+
     else
     {
         http_response_code (406);
@@ -102,8 +97,5 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
     
     exit();
 }
-
-
-
 
 ?>

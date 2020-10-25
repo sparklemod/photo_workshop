@@ -161,3 +161,8 @@ transform: rotate(-45deg);
 .profile-btn:hover {
   background-color: #FFF;
 }
+
+.profile-info-block label {
+  width: 100px;
+  display: inline-block;
+}
