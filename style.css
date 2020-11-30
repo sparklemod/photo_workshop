@@ -166,3 +166,28 @@ transform: rotate(-45deg);
   width: 100px;
   display: inline-block;
 }
+
+#orders td {
+	max-width: 120px;
+	min-width:  120px;
+	text-align: center;
+}
+
+#orders thead {
+	background-color: #DDD;
+}
+#orders thead tr {
+	padding-bottom: 20px;
+}
+#orders tbody td {
+	background-color: #EEE;
+	border-top: 10px solid white;
+	padding: 5px;
+}
+#orders form {
+	margin: 0;
+}
+#orders form button {
+	margin-bottom: 2px;
+	width: 90px;
+}

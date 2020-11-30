@@ -1,5 +1,3 @@
-
-
 <?php 
 include "header.php";
 ?>
@@ -21,9 +19,9 @@ include "header.php";
 				<div class="profile-info-block">
 					<label>Почта:</label><span><?php echo $userdata["user_login"] ?></span>
 				</div>
-			<?php } else { ?>
-				<h4 class="text-gray mb-5">Нет доступа. Пожалуйста, сперва авторизуйтесь.</h4>
-			<?php } ?>
+			<?php } else { 
+				header("Location: noaccess.php"); 
+			} ?>
 		</div>
 	</main>
 <?php 

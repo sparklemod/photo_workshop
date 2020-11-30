@@ -34,7 +34,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     
-    include 'db_connection.php';
+    include 'functions.php';
 
     ////Код для авторизации
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 
         if(!$data || $data['user_login'] !== $_POST['login']){
 
-            $query = mysqli_query($link,"INSERT INTO users (user_login, first_name, last_name, user_password) VALUES ('" .
+            $query = mysqli_query($link,"INSERT INTO orders (user_login, first_name, last_name, user_password) VALUES ('" .
                 mysqli_real_escape_string($link, $_POST['login']) . "', '" . 
                 mysqli_real_escape_string($link, $_POST['first-name']) . "', '" . 
                 mysqli_real_escape_string($link, $_POST['last-name']) . "', '" . 
@@ -87,6 +87,80 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
             echo '<h1>Пользователь уже зарегистрирован</h1>';
         }
     }
+	
+	/// добавить новый заказ
+	elseif (isset($_POST['new-order']) && isset($_SESSION["id"])) {
+		$link = getConnection();
+		
+		$query = mysqli_query($link,
+			"INSERT INTO orders (userid, order_date, price, price_paid, photosession_date,
+			photosession_address, photosession_time, photosession_timelength, add_comment) VALUES (" .
+                mysqli_real_escape_string($link, $_SESSION["id"]) . ", " . 
+                "DATE(NOW()), 5000, false, '" . 
+				mysqli_real_escape_string($link, $_POST['photosession_date']) . "', '" . 
+                mysqli_real_escape_string($link, $_POST['photosession_address']) . "', '" . 
+				mysqli_real_escape_string($link, $_POST['photosession_time']) . "', " . 
+				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . ", '" . 
+				mysqli_real_escape_string($link, $_POST['add_comment']) . "');"
+        );
+
+        if ($query){
+            header("Location: orders.php"); 
+        } else {
+            echo '<h1>Ошибка при заполнении базы данных</h1>';
+        }
+	}
+	
+	/// редактировать заказ
+	elseif (isset($_POST['change-order']) && isset($_SESSION["id"])) {
+		$link = getConnection();
+		
+		$query = mysqli_query($link,
+			"UPDATE orders SET photosession_date='".
+				mysqli_real_escape_string($link, $_POST['photosession_date']) . "', " .
+				"photosession_address='".
+				mysqli_real_escape_string($link, $_POST['photosession_address']) . "', " .
+				"photosession_time='".
+				mysqli_real_escape_string($link, $_POST['photosession_time']) . "', " .
+				"photosession_timelength=".
+				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . ", " .
+				"add_comment='".
+				mysqli_real_escape_string($link, $_POST['add_comment']) . "' WHERE id=" . $_POST['id'] . ";"
+        );
+
+        if ($query){
+            header("Location: orders.php"); 
+        } else {
+            echo '<h1>Ошибка при заполнении базы данных</h1>';
+			echo mysqli_error($link);
+        }
+	}
+	
+	/// совершить действие над заказом
+	elseif (isset($_POST['order-action']) && isset($_SESSION["id"])) {
+		$link = getConnection();
+		$id = intval($_POST['id']);
+		
+		echo "userid=" . $_SESSION["id"] . ", id=" . $id . ";";
+		if (isset($_POST['pay']))
+		{
+			$query = mysqli_query($link,
+				"UPDATE orders SET price_paid=true WHERE userid=" . $_SESSION["id"] . " and id=" . $id . ";");
+			header("Location: orders.php"); 
+
+		}
+		elseif (isset($_POST['change']))
+		{
+			$_SESSION['order_id'] = $id;
+			header("Location: add_order.php"); 
+		}
+		elseif (isset($_POST['cancel']))
+		{
+			$query = mysqli_query($link,
+				"DELETE FROM orders WHERE userid=" . $_SESSION["id"] . " and id=" . $id . ";");
+			header("Location: orders.php"); 
+		}
+	}
 
     ////некорректные запросы
 

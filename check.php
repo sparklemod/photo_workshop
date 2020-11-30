@@ -1,6 +1,6 @@
 <?php
 // Скрипт проверки
-include 'db_connection.php';
+include 'functions.php';
 
 // Соединямся с БД
 $link = getConnection();
