@@ -16,6 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL auto_increment,
+  `userid` int(11) default NULL,
+  `order_date` date default NULL,
+  `price` float default NULL,
+  `price_paid` tinyint(1) default NULL,
+  `photosession_date` date default NULL,
+  `photosession_address` tinytext,
+  `photosession_time` time default NULL,
+  `photosession_timelength` float default NULL,
+  `add_comment` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (7,11,'2020-11-30',5000,1,'2020-12-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð° Ð´Ð¾Ð¼ 5','14:00:00',5,'Ð¡Ð²Ð°Ð´ÑŒÐ±Ð°');
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -53,4 +85,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-21 15:38:53
+-- Dump completed on 2020-11-30  6:31:27

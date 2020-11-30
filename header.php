@@ -37,6 +37,7 @@
 								<form method="POST" action="actions.php" class="profile-form">
 									<input type="hidden" name="leave">
 									<a class="profile-btn" href="profile.php">Профиль</a>
+									<a class="profile-btn" href="orders.php">Заказы</a>
 									<a class="profile-btn">Настройки</a>
 
 									<button type="submit" class="profile-btn">Выйти</button>
