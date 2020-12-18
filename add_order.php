@@ -3,7 +3,7 @@ include "header.php";
 ?>
 	<main class="pt-5">
 		<div class="container pb-5">
-		<form method="POST" action="actions.php" class="form-signin" >
+		<form method="POST" action="actions.php" class="form-signin" enctype="multipart/form-data">
 			<?php
 			if ($isLogin)
 			{
@@ -13,6 +13,8 @@ include "header.php";
 					$link = getConnection();
 					$query = mysqli_query($link, "SELECT * FROM orders WHERE userid = ".intval($_SESSION['id'])." and id = ".intval($orderId));
 					$order = mysqli_fetch_assoc($query);
+				} else {
+					$order = null;
 				}
 				
 				if (!$order){
@@ -21,11 +23,12 @@ include "header.php";
 					<input type="hidden" name="new-order">
 					<?php 
 					$order = array(
+						"type" => "",
 						"photosession_address" => "ул. Пушкина",
 						"photosession_date" => "2000-01-01",
 						"photosession_time" => "12:00:00",
 						"photosession_timelength" => "1",
-						"add_comment" => ""
+						"task_file" => ""
 					);
 				} else {
 					?>
@@ -36,6 +39,33 @@ include "header.php";
 					<?php 
 				}
     			?>
+				
+				<?php 
+					if ($order["type"] == ""){
+					?>
+						<div class="form-group">
+							<label>Тип фотосессии</label>
+							<select name="type" class="form-control" >
+							<?php 
+								$types = mysqli_query($link, "SELECT * FROM order_types;");
+								while($type = mysqli_fetch_assoc($types)) {
+									echo "<option>" . $type["name"] . "</option>";
+								}
+							?>
+							</select>
+						</div>
+					<?php
+					} else {
+					?>
+						<div class="form-group">
+							<label>Тип фотосессии</label>
+							<input type="text" class="form-control" readonly
+								value=<?php echo '"' . $order["type"] . '"'; ?>  >
+						</div>
+					<?php
+					}
+    			?>
+				
 
 				<div class="form-group">
 					<label>Адрес фотосессии</label>
@@ -62,9 +92,18 @@ include "header.php";
 				</div>
 				
 				<div class="form-group">
-					<label>Дополнительный комментарий</label>
-					<input type="text" class="form-control"  placeholder="Оставьте комментарий здесь" name="add_comment"
-						value=<?php echo '"' . $order["add_comment"]. '"'; ?>  >
+					<label>Дополнительное описание</label>
+					<?php 
+					if ($order["task_file"] == ""){
+						?>
+							<input type="file" class="form-control" name="task_file"> 
+						<?php 
+					} else {
+						?>
+							<input type="text" class="form-control" readonly value=<?php echo '"' . $order["task_file"]. '"'; ?> >
+						<?php 
+					}
+					?>
 				</div>
 				  
 				<button class="btn btn-accent text-white btn-lg  btn-block" type="submit" >Сохранить</button>

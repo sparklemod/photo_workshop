@@ -16,6 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `order_types`
+--
+
+DROP TABLE IF EXISTS `order_types`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `order_types` (
+  `name` tinytext,
+  `price` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `order_types`
+--
+
+LOCK TABLES `order_types` WRITE;
+/*!40000 ALTER TABLE `order_types` DISABLE KEYS */;
+INSERT INTO `order_types` VALUES ('Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°',5000),('Ð”ÐµÐ»Ð¾Ð²Ñ‹Ðµ Ð¿Ð¾Ñ€Ñ‚Ñ€ÐµÑ‚Ñ‹',3000),('ÐŸÑ€ÐµÐ´Ð¼ÐµÑ‚Ð½Ð°Ñ Ñ„Ð¾Ñ‚Ð¾ÑÑŠÐµÐ¼ÐºÐ°',2000),('Ð ÐµÐºÐ»Ð°Ð¼Ð½Ð°Ñ Ñ„Ð¾Ñ‚Ð¾ÑÑŠÐµÐ¼ÐºÐ°',8000),('Ð¤Ð¾Ñ‚Ð¾ÑÑŠÐµÐ¼ÐºÐ° Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´ÑÑ‚Ð²ÐµÐ½Ð½Ñ‹Ñ… Ð¿Ñ€Ð¾Ñ†ÐµÑÑÐ¾Ð²',4000),('Ð¡Ð²Ð°Ð´ÐµÐ±Ð½Ñ‹Ðµ Ñ„Ð¾Ñ‚Ð¾ÑÑŠÐµÐ¼ÐºÐ¸',6000),('Ð‘ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ñ„Ð¾Ñ‚Ð¾ÑÐµÑÑÐ¸Ð¸',4000),('Ð˜Ð½Ð´Ð¸Ð²Ð¸Ð´ÑƒÐ°Ð»ÑŒÐ½Ñ‹Ðµ Ñ„Ð¾Ñ‚Ð¾ÑÐµÑÑÐ¸Ð¸',2000);
+/*!40000 ALTER TABLE `order_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orders`
 --
 
@@ -32,9 +55,10 @@ CREATE TABLE `orders` (
   `photosession_address` tinytext,
   `photosession_time` time default NULL,
   `photosession_timelength` float default NULL,
-  `add_comment` text,
+  `type` tinytext,
+  `task_file` tinytext,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -43,7 +67,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (7,11,'2020-11-30',5000,1,'2020-12-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð° Ð´Ð¾Ð¼ 5','14:00:00',5,'Ð¡Ð²Ð°Ð´ÑŒÐ±Ð°');
+INSERT INTO `orders` VALUES (10,11,'2020-12-18',10000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',2,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°','order10-4.docx'),(11,11,'2020-12-18',5000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',1,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°',''),(12,11,'2020-12-18',5000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',1,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°',''),(13,11,'2020-12-18',5000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',1,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°',''),(14,11,'2020-12-18',5000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',1,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°',''),(15,11,'2020-12-18',5000,0,'2000-01-01','ÑƒÐ». ÐŸÑƒÑˆÐºÐ¸Ð½Ð°','12:00:00',1,'Ð ÐµÐ¿Ð¾Ñ€Ñ‚Ð°Ð¶Ð½Ð°Ñ ÑÑŠÐµÐ¼ÐºÐ°','order15-4.docx');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,4 +109,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-30  6:31:27
+-- Dump completed on 2020-12-18 18:15:37

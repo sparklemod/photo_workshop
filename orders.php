@@ -14,6 +14,8 @@ include "header.php";
 					list($year, $month, $day) = explode('-', $date);
 					return $day . "." . $month . "." . $year;
 				}
+				
+				unset($_SESSION["order_id"]);
 				?>
 
 				<h4 class="text-gray mb-5">Заказы</h4>
@@ -34,6 +36,7 @@ include "header.php";
 							<td>№ заказа</td>
 							<td>Дата оформления</td>
 							<td>Цена</td>
+							<td>Тип фотосессии</td>
 							<td>Адрес фотосессии</td>
 							<td>Дата фотосессии</td>
 							<td>Время фотосессии</td>
@@ -49,6 +52,7 @@ include "header.php";
 								<td><?php echo $order["id"]; ?></td>
 								<td><?php echo dateToText($order['order_date']); ?></td>
 								<td><?php echo $order["price"]; ?></td>
+								<td><?php echo $order["type"]; ?></td>
 								<td><?php echo $order["photosession_address"]; ?></td>
 								<td><?php echo dateToText($order['photosession_date']); ?></td>
 								<td><?php list($h, $m, $s) = explode(':', $order['photosession_time']);

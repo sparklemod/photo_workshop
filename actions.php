@@ -30,6 +30,24 @@ function login($link){
         }
 }
 
+function saveFile($file, $id){
+	if (isset($_FILES['task_file']) && $_FILES['task_file']["size"] > 0){
+		$file = $_FILES['task_file'];
+		var_dump($file);
+		$filename = "order" . $id . "-" . preg_replace("/[^A-Za-z0-9._-]/i", "", $file["name"]);
+		$moved = move_uploaded_file($file["tmp_name"], "./files/" . $filename);
+		if (!$moved) {
+			echo '<h1>Не получилось переместить файл</h1>';
+			$file = "";
+		} else {
+			$file = $filename;
+		}
+	} else {
+		$file = "";
+	}
+	return $file;
+}
+
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -92,18 +110,31 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 	elseif (isset($_POST['new-order']) && isset($_SESSION["id"])) {
 		$link = getConnection();
 		
+		$price = mysqli_query($link, "SELECT price FROM order_types WHERE name='" . mysqli_real_escape_string($link, $_POST['type']) . "';");
+		$price = mysqli_fetch_assoc($price)["price"];
+		
 		$query = mysqli_query($link,
-			"INSERT INTO orders (userid, order_date, price, price_paid, photosession_date,
-			photosession_address, photosession_time, photosession_timelength, add_comment) VALUES (" .
-                mysqli_real_escape_string($link, $_SESSION["id"]) . ", " . 
-                "DATE(NOW()), 5000, false, '" . 
+			"INSERT INTO orders (userid, type, order_date, price, price_paid, photosession_date,
+			photosession_address, photosession_time, photosession_timelength) VALUES (" .
+                mysqli_real_escape_string($link, $_SESSION["id"]) . ", '" . 
+				mysqli_real_escape_string($link, $_POST['type']) . "', " . 
+                "DATE(NOW())," .
+				$price * intval(mysqli_real_escape_string($link, $_POST['photosession_timelength'])) . ", " . 
+				"false, '" . 
 				mysqli_real_escape_string($link, $_POST['photosession_date']) . "', '" . 
                 mysqli_real_escape_string($link, $_POST['photosession_address']) . "', '" . 
 				mysqli_real_escape_string($link, $_POST['photosession_time']) . "', " . 
-				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . ", '" . 
-				mysqli_real_escape_string($link, $_POST['add_comment']) . "');"
+				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . ");"
         );
-
+		
+		$id = mysqli_insert_id ($link);
+		$file = saveFile($_FILES["task_file"], $id);
+		if ($file != ""){
+			$query = mysqli_query($link,
+				"UPDATE orders SET task_file='" . $file .  "' WHERE id=" . $id . ";"
+			);
+		}
+		
         if ($query){
             header("Location: orders.php"); 
         } else {
@@ -123,11 +154,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 				"photosession_time='".
 				mysqli_real_escape_string($link, $_POST['photosession_time']) . "', " .
 				"photosession_timelength=".
-				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . ", " .
-				"add_comment='".
-				mysqli_real_escape_string($link, $_POST['add_comment']) . "' WHERE id=" . $_POST['id'] . ";"
+				mysqli_real_escape_string($link, $_POST['photosession_timelength']) . " WHERE id=" . $_POST['id'] . ";"
         );
+		
+		$file = saveFile($_FILES["task_file"], $_POST['id']);
+		if ($file != ""){
+			$query = mysqli_query($link,
+				"UPDATE orders SET task_file='" . $file .  "' WHERE id=" . $_POST['id'] . ";"
+			);
+		}
 
+		unset($_SESSION['order_id']);
+		
         if ($query){
             header("Location: orders.php"); 
         } else {
@@ -156,6 +194,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 		}
 		elseif (isset($_POST['cancel']))
 		{
+			$file = mysqli_query($link,"SELECT task_file FROM userid=" . $_SESSION["id"] . " and id=" . $id . ";");
+			$file = mysqli_fetch_assoc($file )["task_file"];
+			if ($file != "")
+				unlink("./files/" . $file);
+			
 			$query = mysqli_query($link,
 				"DELETE FROM orders WHERE userid=" . $_SESSION["id"] . " and id=" . $id . ";");
 			header("Location: orders.php"); 
